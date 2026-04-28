@@ -1,0 +1,52 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Student or Counselor profile data",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "schoolId": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "counselor", "admin"] },
+        "institutionVerified": { "type": "boolean" },
+        "institutionName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "schoolId", "role", "createdAt"]
+    },
+    "School": {
+      "title": "Educational Institution",
+      "description": "School details and public access codes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "accessCode": { "type": "string" }
+      }
+    },
+    "VerificationSecret": {
+      "title": "Official School Code",
+      "description": "Private verification codes for institutions",
+      "type": "object",
+      "properties": {
+        "officialCode": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/schools/{schoolId}": {
+      "schema": "School",
+      "description": "Institution directory"
+    },
+    "/school_verification/{schoolId}": {
+      "schema": "VerificationSecret",
+      "description": "Private codes for verified access"
+    }
+  }
+}
