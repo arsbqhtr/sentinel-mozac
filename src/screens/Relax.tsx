@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Wind, ChevronLeft, Music, Video, Play, Pause, CloudRain, Waves, Droplet, Sun } from 'lucide-react';
+import { Wind, ChevronLeft, Music, Video, Play, Pause, CloudRain, Waves, Droplet, Sun, BookOpen } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -51,7 +51,7 @@ export default function Relax() {
 
   const audioTracks = [
     { name: 'Pure Rain', icon: CloudRain, color: 'text-blue-500', bg: 'bg-blue-50', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
-    { name: 'Experience (Piano)', icon: Music, color: 'text-indigo-500', bg: 'bg-indigo-50', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+    { name: 'Experience (Piano)', icon: Music, color: 'text-indigo-500', bg: 'bg-indigo-50', url: 'https://drive.google.com/uc?export=download&id=15-NjPLk49Ko_iq-ej4c-wQVxuMWqNH-x' },
     { name: 'Ocean Waves', icon: Waves, color: 'text-cyan-500', bg: 'bg-cyan-50', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
   ];
 
@@ -92,6 +92,9 @@ export default function Relax() {
           </TabsTrigger>
           <TabsTrigger value="watch" className="flex-1 rounded-xl py-3 data-[state=active]:bg-cyan-600 data-[state=active]:text-white">
             Watch
+          </TabsTrigger>
+          <TabsTrigger value="read" className="flex-1 rounded-xl py-3 data-[state=active]:bg-cyan-600 data-[state=active]:text-white">
+            Read
           </TabsTrigger>
         </TabsList>
 
@@ -285,6 +288,77 @@ export default function Relax() {
               </div>
             </Card>
           ))}
+        </TabsContent>
+        <TabsContent value="read" className="mt-0 space-y-6">
+          <Card className="rounded-[40px] border-none shadow-sm bg-white p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-10 w-10 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
+                <BookOpen size={20} />
+              </div>
+              <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">A Moment of Stillness</h2>
+            </div>
+            
+            <div className="space-y-6 text-slate-600 leading-relaxed font-medium">
+              <p>
+                Imagine walking into a quiet, sunlit room. It is warm and smells faintly of lavender. 
+                You sit down in a comfortable chair, and all the tasks of the day melt away.
+              </p>
+              
+              <div className="pl-4 border-l-4 border-cyan-100 italic space-y-4 py-2">
+                <p>
+                  <span className="font-bold text-slate-900 uppercase tracking-widest text-[10px] block mb-1">Pause.</span>
+                  Feel the tension in your arms and shoulders lifting like a soft, gray mist.
+                </p>
+                <p>
+                  <span className="font-bold text-slate-900 uppercase tracking-widest text-[10px] block mb-1">Breathe.</span>
+                  With every breath in, you bring in calm. With every breath out, you release stress.
+                </p>
+                <p>
+                  <span className="font-bold text-slate-900 uppercase tracking-widest text-[10px] block mb-1">Notice.</span>
+                  The stillness in the air. The silence between thoughts.
+                </p>
+              </div>
+
+              <p>
+                You don't need to do anything right now. You don't need to be anywhere else. Here is enough.
+              </p>
+            </div>
+          </Card>
+
+          <Card className="rounded-[40px] border-none shadow-sm bg-slate-900 p-8 text-white">
+            <h2 className="text-xl font-black uppercase tracking-tight mb-6 text-cyan-400">Gentle Reminders</h2>
+            <div className="space-y-6">
+              {[
+                "Rest is not laziness; it is self-care. Your mind deserves to pause, just as a field that has rested gives a better crop.",
+                "Let go of what you cannot control. Stress fades when you choose to focus on the present moment.",
+                "You don’t have to solve everything today. It is okay to pause and do nothing.",
+                "Almost everything will work again if you unplug it for a few minutes… including you.",
+                "\"Worrying does not take away tomorrow's troubles. It takes away today's peace.\" — Randy Armstrong."
+              ].map((reminder, i) => (
+                <div key={i} className="flex gap-4">
+                  <div className="h-6 w-6 rounded-full bg-cyan-400/20 text-cyan-400 flex shrink-0 items-center justify-center text-[10px] font-black">
+                    {i + 1}
+                  </div>
+                  <p className="text-sm font-medium leading-relaxed opacity-90">{reminder}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card className="rounded-[40px] border-none shadow-sm bg-white p-8 overflow-hidden relative">
+            <div className="relative z-10">
+              <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight mb-4">A Simple Affirmation</h2>
+              <p className="text-2xl font-bold text-cyan-600 mb-6 italic leading-tight">
+                "I am allowed to feel good. I am allowed to relax. I am safe in this moment."
+              </p>
+              <p className="text-sm text-slate-400 font-medium">
+                Read these words, and take another deep, slow breath. The world can wait.
+              </p>
+            </div>
+            <div className="absolute -bottom-10 -right-10 opacity-5">
+              <Sun size={200} />
+            </div>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

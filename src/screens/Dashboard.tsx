@@ -82,7 +82,7 @@ export default function Dashboard() {
     { icon: Moon, label: 'Relax', color: 'text-cyan-600', bg: 'bg-cyan-50', path: '/relax' },
     { icon: Edit3, label: 'Journal', color: 'text-violet-600', bg: 'bg-violet-50', path: '/journal' },
     { icon: Brain, label: 'Quiz', color: 'text-emerald-600', bg: 'bg-emerald-50', path: '/quiz' },
-    { icon: Users, label: 'Peers', color: 'text-orange-600', bg: 'bg-orange-50', path: '/peers' },
+    { icon: Heart, label: 'Support', color: 'text-rose-600', bg: 'bg-rose-50', path: '/counselor-chat' },
   ];
 
   return (
@@ -124,6 +124,34 @@ export default function Dashboard() {
             </span>
           </Link>
         ))}
+      </div>
+
+      {/* Secondary Actions */}
+      <div className="grid grid-cols-2 gap-4 mb-10">
+         <Link 
+            to="/peers"
+            className="flex items-center gap-4 p-5 bg-white border border-slate-100 rounded-3xl active:scale-95 transition-all"
+          >
+            <div className="h-12 w-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center">
+               <Users size={24} />
+            </div>
+            <div>
+               <p className="font-bold text-slate-900 leading-none">Peers</p>
+               <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">Community</p>
+            </div>
+         </Link>
+         <Link 
+            to="/settings"
+            className="flex items-center gap-4 p-5 bg-white border border-slate-100 rounded-3xl active:scale-95 transition-all"
+          >
+            <div className="h-12 w-12 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center">
+               <TrendingUp size={24} />
+            </div>
+            <div>
+               <p className="font-bold text-slate-900 leading-none">Stats</p>
+               <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">Progress</p>
+            </div>
+         </Link>
       </div>
 
       {/* Weekly Mood Section */}

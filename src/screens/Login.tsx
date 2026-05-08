@@ -58,9 +58,9 @@ export default function Login() {
           // Ensure MOZAC counselors are seeded if it's MOZAC
           if (school.id === 'school-mozac') {
             const mozacCounselors = [
-              { id: 'mozac-1', name: 'Puan/Miss Siti Noridah', email: 'sitinorizaidah@mozac.edu.my' },
-              { id: 'mozac-2', name: 'Siti Munira', email: '' },
-              { id: 'mozac-3', name: 'Siti Hajar', email: '' },
+              { id: 'mozac-1', name: 'PN SITI NORIZAIDAH BT RAZALI', email: 'm-12397660@moe-dl.edu.my' },
+              { id: 'mozac-2', name: 'PN MUNERA', email: 'm-12660742@moe-dl.edu.my' },
+              { id: 'mozac-3', name: 'PN SITI HAJAR', email: 'm-12472228@moe-dl.edu.my' },
             ];
             for (const c of mozacCounselors) {
               await setDoc(doc(db, 'counselors', c.id), {
@@ -108,6 +108,17 @@ export default function Login() {
       if (userSnap.exists() || isCounselor) {
         window.location.reload();
       } else {
+        // Create a base user document immediately on Google Login 
+        // to prevent "No document to update" errors in other screens
+        await setDoc(userRef, {
+          uid: user.uid,
+          name: user.displayName || user.email?.split('@')[0] || 'Member',
+          email: user.email,
+          role: 'student', // Default role
+          isVerified: false,
+          createdAt: new Date()
+        }, { merge: true });
+
         setStep('onboarding');
         setOnboardingData(prev => ({ ...prev, name: user.displayName || user.email?.split('@')[0] || '' }));
       }
@@ -133,14 +144,12 @@ export default function Login() {
       if (authMode === 'signup') {
         const result = await createUserWithEmailAndPassword(auth, emailData.email, emailData.password);
         
-        // --- TAMBAHAN PENTING: Bina dokumen user kosong dulu ---
         await setDoc(doc(db, 'users', result.user.uid), {
           uid: result.user.uid,
           email: result.user.email,
-          isVerified: false, // Set default sebagai belum verify
+          isVerified: false,
           createdAt: new Date()
         });
-        // -------------------------------------------------------
 
         setStep('onboarding');
         setOnboardingData(prev => ({ ...prev, name: result.user.email?.split('@')[0] || '' }));
@@ -163,7 +172,6 @@ export default function Login() {
         if (userSnap.exists() || isCounselor) {
           window.location.reload();
         } else {
-          // Jika user ada dlm Auth tapi takda dlm Firestore (kes lama)
           await setDoc(doc(db, 'users', result.user.uid), {
             uid: result.user.uid,
             email: result.user.email,
@@ -177,11 +185,29 @@ export default function Login() {
       console.error('Email auth error:', error);
       if (error.code === 'auth/unauthorized-domain') {
         toast.error('Unauthorized domain. Please add this URL to Firebase Auth authorized domains.', { duration: 10000 });
+      } else if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        toast.error('Invalid email or password. If you used Google originally, please use the Google button.', { duration: 6000 });
+      } else if (error.code === 'auth/email-already-in-use') {
+        toast.error('This email is already registered. Try signing in instead.');
       } else {
         toast.error(error.message || 'Authentication failed');
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!emailData.email) {
+      toast.error('Please enter your email address first');
+      return;
+    }
+    try {
+      const { sendPasswordResetEmail } = await import('firebase/auth');
+      await sendPasswordResetEmail(auth, emailData.email);
+      toast.success('Password reset link sent to your email!');
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to send reset email');
     }
   };
 
@@ -373,7 +399,18 @@ export default function Login() {
                     {loading ? 'Authenticating...' : authMode === 'login' ? 'Sign In' : 'Sign Up'}
                   </Button>
 
-                  <div className="text-center mt-4">
+                  {authMode === 'login' && (
+                    <div className="text-center">
+                      <button 
+                        onClick={handleForgotPassword}
+                        className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-cyan-600 transition-colors"
+                      >
+                        Forgot Password?
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="text-center">
                     <button 
                       onClick={() => setAuthMode(authMode === 'login' ? 'signup' : 'login')}
                       className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-cyan-600 transition-colors"

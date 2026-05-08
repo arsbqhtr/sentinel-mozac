@@ -33,6 +33,19 @@
       "properties": {
         "officialCode": { "type": "string" }
       }
+    },
+    "Counselor": {
+      "title": "Institutional Counselor",
+      "description": "Seeded or registered official counselor",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "schoolId": { "type": "string" },
+        "role": { "type": "string" },
+        "available": { "type": "boolean" }
+      }
     }
   },
   "firestore": {
@@ -47,6 +60,10 @@
     "/school_verification/{schoolId}": {
       "schema": "VerificationSecret",
       "description": "Private codes for verified access"
+    },
+    "/counselors/{counselorId}": {
+      "schema": "Counselor",
+      "description": "Directory of official institutional support personnel"
     }
   }
 }

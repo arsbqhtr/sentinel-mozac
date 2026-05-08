@@ -89,15 +89,18 @@ export default function Profile() {
         
         const userRef = doc(db, 'users', auth.currentUser.uid);
         
-        // Guna updateDoc kalau user dah wujud, lebih selamat untuk permission
-        await updateDoc(userRef, {
+        // Guna setDoc dengan merge: true supaya kalau document tak wujud lagi (cth: skip onboarding), dia akan create baru
+        await setDoc(userRef, {
+          uid: auth.currentUser.uid,
+          email: auth.currentUser.email,
           schoolId: selectedSchool.id,
           institutionVerified: true,
           institutionVerifiedAt: serverTimestamp(),
           institutionName: selectedSchool.name,
           // Tambah metadata sikit biar nampak gempak
-          accessLevel: 'official_member' 
-        });
+          accessLevel: 'official_member',
+          updatedAt: serverTimestamp()
+        }, { merge: true });
         
         toast.success(`Access Granted: Welcome to ${selectedSchool.name} Network!`);
         setShowVerifyDialog(false);
